@@ -15,5 +15,7 @@ data class User(
     @Column(nullable = false, unique = true)
     val phone: String,
     @Column(nullable = false, unique = true)
-    val password: String
+    val password: String,
+    @Column(nullable = false, unique = true)
+    val email: String,
 )

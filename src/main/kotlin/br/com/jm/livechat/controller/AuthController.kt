@@ -3,6 +3,7 @@ package br.com.jm.livechat.controller
 import br.com.jm.livechat.entities.User
 import br.com.jm.livechat.models.UserRegisterBody
 import br.com.jm.livechat.repositories.UserRepository
+import br.com.jm.livechat.services.SenderEmailService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -20,11 +21,23 @@ class AuthController {
     @Autowired
     private lateinit var userRepository: UserRepository
 
+    @Autowired
+    private lateinit var senderEmailService: SenderEmailService
+
     @PostMapping("/register")
     fun registerUser(@RequestBody userRegisterBody: UserRegisterBody): ResponseEntity<User> {
-        return Optional.ofNullable(userRepository.save(userRegisterBody.toUser()))
-            .map { user -> ResponseEntity.ok(user) }
-            .orElseGet { ResponseEntity.notFound().build() }
+        return try {
+            val user: User = userRepository.save(userRegisterBody.toUser())
+            senderEmailService.sendEmail(user.name, user.email)
+            return ResponseEntity.ok(user)
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().build()
+        }
+
+
+//        return Optional.ofNullable(userRepository.save(userRegisterBody.toUser()))
+//            .map { _user -> ResponseEntity.ok(_user) }
+//            .orElseGet { ResponseEntity.notFound().build() }
     }
 
     @GetMapping("/{phone}")

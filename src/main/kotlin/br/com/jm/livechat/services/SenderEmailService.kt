@@ -12,19 +12,18 @@ class SenderEmailService {
     @Autowired
     private lateinit var mailSender: JavaMailSender
 
-    fun sendEmail(username: String, emailToSend: String): String? {
+    fun sendEmail(username: String, emailToSend: String){
         val message = SimpleMailMessage()
         message.apply {
             setText("Hello from Spring Boot Application")
-            setTo("wolmirgarbin@gmail.com")
-            setFrom("wolmirgarbin@gmail.com")
+            setTo(emailToSend)
+            setFrom("noreplaylivechat@gmail.com")
         }
 
-        return try {
+        try {
             mailSender.send(message)
-            "E-mail enviado com sucesso!"
         } catch (e: Exception) {
-            null
+            e.message
         }
     }
 }

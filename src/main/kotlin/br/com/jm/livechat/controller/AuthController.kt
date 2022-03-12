@@ -33,11 +33,6 @@ class AuthController {
         } catch (e: Exception) {
             ResponseEntity.badRequest().build()
         }
-
-
-//        return Optional.ofNullable(userRepository.save(userRegisterBody.toUser()))
-//            .map { _user -> ResponseEntity.ok(_user) }
-//            .orElseGet { ResponseEntity.notFound().build() }
     }
 
     @GetMapping("/{phone}")

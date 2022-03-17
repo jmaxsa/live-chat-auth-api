@@ -19,6 +19,7 @@ import java.util.Optional
 @RestController
 @RequestMapping("/user")
 class AuthController {
+
     @Autowired
     private lateinit var userService: UserService
 
